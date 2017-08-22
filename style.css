@@ -1,0 +1,16 @@
+body{
+  font-family: sans-serif;
+  margin: 5%;
+  justify-content: center;
+}
+h1{
+  text-align: center;
+}
+#musicForm{
+  padding:10%;
+  border-top-width: medium;
+  border-bottom-width: medium;
+  border-style: solid;
+  border-color: black;
+  justify-content: center;
+}
