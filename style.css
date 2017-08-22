@@ -14,3 +14,8 @@ h1{
   border-color: black;
   justify-content: center;
 }
+#results {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}

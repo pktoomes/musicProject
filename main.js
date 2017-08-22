@@ -2,10 +2,13 @@ let userSearch = document.getElementById('searchInput')
 let bttn = document.getElementById('button')
 bttn.addEventListener("click", searchMusic)
 console.log(searchInput)
-
+function clearResults(){
+  results.innerHTML = "";
+}
 function searchMusic(){
   let searchMusic = userSearch.value;
   console.log(searchMusic);
+  clearResults();
   fetch("https://itunes.apple.com/search?term=" + searchMusic + "&entity=musicTrack")
     .then(function(response){
       if (response.status !== 200){
@@ -13,16 +16,17 @@ function searchMusic(){
         return;
       }
     response.json().then(function(data){
-      console.log(data);
+      for(i=0;i<20;i++){
+        let item = data.results;
+        let tmpl =`<div class = "resultBox"><div class = "noneImg"></div> <button id="musicBttn" class="musicButton"><img id="${item[i].previewUrl}" src="${item[i].artworkUrl100}"></img></button><div class = "trackTitle"><a href="">${item[i].trackName}</a></div></div>`;
+      document.getElementById('results').innerHTML += tmpl;}
 
-      function useData(){
-        return`${data.map(data =>
-          `<div class = "resultBox"><div class="resultImage"><img src = "${data.artworkUrl60}"></img><div class = "trackTitle"><a href="">${data.trackName}</a></div></div>`
-        )}`
-        console.log(useData);
-      };
-      let addResults = `${useData}`
-      document.getElementById("results").innerHTML = addResults;
     })
-  })
-};
+      var playMusic = document.getElementsByClassName('musicButton');
+      var playIn = document.getElementById('results').addEventListener('click', function(event){
+        event.target = playMusic;
+        let addMusic = `<audio src = "${event.target.id}" id = "audio" controls = "controls">`
+        return document.getElementById('audioHere').innerHTML = addMusic;
+      })
+    })
+  };
