@@ -14,7 +14,8 @@ h1{
   border-color: black;
   justify-content: center;
 }
-#results {
+.resultsContainer {
+  margin-top: 2.5em;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
