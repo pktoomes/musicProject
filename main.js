@@ -1,32 +1,62 @@
-let userSearch = document.getElementById('searchInput')
-let bttn = document.getElementById('button')
-bttn.addEventListener("click", searchMusic)
-console.log(searchInput)
-function clearResults(){
-  results.innerHTML = "";
-}
+const url = "https://itunes.apple.com/search?term=";
+let loopArray = [];
+let userSearch = "";
+let formSearch = document.querySelectorAll('form')[0];
+
+
+//fetch itunes data
 function searchMusic(){
-  let searchMusic = userSearch.value;
-  console.log(searchMusic);
-  clearResults();
-  fetch("https://itunes.apple.com/search?term=" + searchMusic + "&entity=musicTrack")
+  return fetch(`${url}${userSearch}`)
     .then(function(response){
-      if (response.status !== 200){
-        console.log('status', response.status)
-        return;
-      }
-    response.json().then(function(data){
-      for(i=0;i<20;i++){
-        let item = data.results;
-        let tmpl =`<div class = "resultBox"><div class = "noneImg"></div> <button id="musicBttn" class="musicButton"><img id="${item[i].previewUrl}" src="${item[i].artworkUrl100}"></img></button><div class = "trackTitle"><a href="">${item[i].trackName}</a></div></div>`;
-      document.getElementById('results').innerHTML += tmpl;}
+        return response.json();
+      })
+    .catch(function (err){
+      console.log(err)
+    })
+  }
+
+  //play song
+  function playSong(url){
+    let audioPlayer = document.querySelector('.musicPlayer');
+    audioPlayer.setAttribute('src', url );
+  }
+
+  //single song box
+  function singleSong(item){
+    return `
+      <div class = "resultBox">
+       <img src="${item.artworkUrl100}" alt ="${item.artistName}"></img>
+       <h4 class="songTitle">
+       <button type="submit"
+       onclick="playSong('${item.previewUrl}')">${item.trackName}</button>
+       </h4>
+       <h3>${item.artistName}</h3>
+       </div>`
+     }
+
+//loop previous function
+function formTrackList(){
+  let trackList = '';
+  for(let i in loopArray){
+    trackList += singleSong(loopArray[i]);
+  }
+  console.log(trackList)
+  return trackList;
+}
+
+//add trackList to DOM
+function addtoDOM(){
+  const results = document.querySelector('.resultsContainer');
+  results.innerHTML = formTrackList(loopArray);
+}
+
+//submit event
+formSearch.onsubmit = function(){
+  event.preventDefault();
+  userSearch=event.target.querySelector('input[name="searchInput"]').value
+  searchMusic(userSearch).then(function(data){
+    loopArray=data.results;
+    addtoDOM(loopArray);
 
     })
-      var playMusic = document.getElementsByClassName('musicButton');
-      var playIn = document.getElementById('results').addEventListener('click', function(event){
-        event.target = playMusic;
-        let addMusic = `<audio src = "${event.target.id}" id = "audio" controls = "controls">`
-        return document.getElementById('audioHere').innerHTML = addMusic;
-      })
-    })
-  };
+};

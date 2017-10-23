@@ -9,14 +9,15 @@
     <div id = 'container'>
     <h1>Awesome Music Site</h1>
     <section id = "search">
-      <input type="text" id = "searchInput"></input>
-      <button type="click"id = "button">Submit</button>
+      <form class="formSearch">
+        <input type="text" name = "searchInput"></input>
+        <input type="submit" value = "Search iTunes"></input>
+      </form>
     </section>
-    <section id = "audioHere"></section>
-    <div id ="resultsContainer">
-    <section id = "results">
+    <section id = "audioHere">
+      <audio class="musicPlayer" controls="controls" src=""></audio>
     </section>
-    </div>
+    <div class ="resultsContainer"></div>
     </div>
   </body>
   <script type="text/javascript" src = "main.js"></script>
